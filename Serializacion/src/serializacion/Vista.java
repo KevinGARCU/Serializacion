@@ -5,16 +5,7 @@
  */
 package serializacion;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
-import java.io.EOFException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -30,29 +21,27 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Estudiantes
  */
-public class Vista extends JFrame implements ActionListener {
-
-    Estudiante c;
+public final class Vista extends JFrame {
 
     JTabbedPane pestañas = new JTabbedPane();
     JTable tabla = new JTable();
     JScrollPane sTabla = new JScrollPane(tabla);
-    
+
     ArrayList<Estudiante> estudiantes = new ArrayList<>();
 
-    JButton botonIngresar, botonConsultar, botonGuardar;
+    JButton botonIngresar, botonConsultar, botonBorrar, botonEditar;
 
-    JTextField estudiante;
+    JTextField nombre;
     JTextField codigo;
     JTextField not1;
     JTextField not3;
     JTextField not2;
+    JTextField datoConsultar;
 
-    File f = new File("\\Datos.txt");
-    BufferedWriter bw;
 
     public Vista() {
-        ventana();
+        ventanaPrincipal();
+       // ventanaEditar();
         ingresar();
         pestanaCosultar();
         tabla.setModel(new javax.swing.table.DefaultTableModel(
@@ -63,8 +52,8 @@ public class Vista extends JFrame implements ActionListener {
         ));
     }
 
-    public void ventana() {
-        setBounds(500, 500, 700, 500);
+    public void ventanaPrincipal() {
+        setBounds(500, 500, 700, 700);
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -80,17 +69,12 @@ public class Vista extends JFrame implements ActionListener {
 
         botonIngresar = new JButton("Ingresar datos");
         botonIngresar.setBounds(30, 380, 150, 25);
-        botonIngresar.addActionListener(this);
-
-        botonGuardar = new JButton("Guardar datos");
-        botonGuardar.setBounds(220, 380, 150, 25);
-        botonGuardar.addActionListener(this);
 
         JLabel mensajeingresoE = new JLabel("Ingrese el nombre del estudiante");
         mensajeingresoE.setBounds(10, 80, 250, 50);
 
-        estudiante = new JTextField();
-        estudiante.setBounds(10, 135, 190, 25);
+        nombre = new JTextField();
+        nombre.setBounds(10, 135, 190, 25);
 
         JLabel mensajeingresoC = new JLabel("Ingrese el codigo del estudiante");
         mensajeingresoC.setBounds(290, 80, 250, 50);
@@ -115,9 +99,8 @@ public class Vista extends JFrame implements ActionListener {
         not3.setBounds(360, 210, 30, 30);
 
         panelIngresar.add(botonIngresar);
-        panelIngresar.add(botonGuardar);
         panelIngresar.add(mensajeingresoE);
-        panelIngresar.add(estudiante);
+        panelIngresar.add(nombre);
         panelIngresar.add(mensajeingresoC);
         panelIngresar.add(codigo);
         panelIngresar.add(nota1);
@@ -133,11 +116,23 @@ public class Vista extends JFrame implements ActionListener {
     public void pestanaCosultar() {
         JPanel panelConsultar = new JPanel();
         panelConsultar.setLayout(null);
-        botonConsultar = new JButton("Consultar");
-        botonConsultar.setBounds(60, 30, 100, 25);
-        botonConsultar.addActionListener(this);
 
-        sTabla.setBounds(30, 80, 600, 350);
+        JLabel labelDato = new JLabel("Ingrese el dato a Consultar");
+        labelDato.setBounds(60, 10, 250, 25);
+
+        datoConsultar = new JTextField();
+        datoConsultar.setBounds(60, 50, 150, 25);
+
+        botonConsultar = new JButton("Consultar");
+        botonConsultar.setBounds(60, 100, 100, 25);
+
+        botonBorrar = new JButton("Borrar");
+        botonBorrar.setBounds(190, 100, 100, 25);
+
+        botonEditar = new JButton("Editar");
+        botonEditar.setBounds(310, 100, 100, 25);
+
+        sTabla.setBounds(30, 150, 600, 350);
         tabla.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]{},
                 new String[]{
@@ -145,6 +140,10 @@ public class Vista extends JFrame implements ActionListener {
                 }
         ));
         panelConsultar.add(botonConsultar);
+        panelConsultar.add(botonBorrar);
+        panelConsultar.add(botonEditar);
+        panelConsultar.add(labelDato);
+        panelConsultar.add(datoConsultar);
 
         panelConsultar.add(sTabla);
 
@@ -177,46 +176,67 @@ public class Vista extends JFrame implements ActionListener {
         tabla.setModel(model);
     }
 
-    public void hacerSerializacion(ArrayList datosEstudiantes) {
+    public void ventanaEditar() {
+        JPanel panelEditar = new JPanel();
+        panelEditar.setLayout(null);
 
-        try(ObjectOutputStream oos=new ObjectOutputStream(new FileOutputStream("D:\\estudiantes.txt"))){
-            //Escribimos en un fichero
-            oos.writeObject(datosEstudiantes);
-            
-        }catch(IOException e){
-        }
+        JButton botonGuardar;
+
+        JTextField estudiante2;
+        JTextField codigo2;
+        JTextField not12;
+        JTextField not32;
+        JTextField not22;
+        
+        botonGuardar = new JButton("Ingresar datos");
+        botonGuardar.setBounds(30, 380, 150, 25);
+
+        JLabel mensajeingresoE = new JLabel("Ingrese el nombre del estudiante");
+        mensajeingresoE.setBounds(10, 80, 250, 50);
+
+        estudiante2 = new JTextField();
+        estudiante2.setBounds(10, 135, 190, 25);
+
+        JLabel mensajeingresoC = new JLabel("Ingrese el codigo del estudiante");
+        mensajeingresoC.setBounds(290, 80, 250, 50);
+
+        codigo2 = new JTextField();
+        codigo2.setBounds(290, 135, 190, 25);
+
+        JLabel nota1 = new JLabel("Nota1");
+        JLabel nota2 = new JLabel("Nota2");
+        JLabel nota3 = new JLabel("Nota3");
+
+        nota1.setBounds(40, 185, 50, 30);
+        nota2.setBounds(200, 185, 50, 30);
+        nota3.setBounds(360, 185, 50, 30);
+
+        not12 = new JTextField();
+        not32 = new JTextField();
+        not22 = new JTextField();
+
+        not12.setBounds(40, 210, 30, 30);
+        not22.setBounds(200, 210, 30, 30);
+        not32.setBounds(360, 210, 30, 30);
+        
+        panelEditar.add(botonGuardar);
+        panelEditar.add(mensajeingresoE);
+        panelEditar.add(estudiante2);
+        panelEditar.add(mensajeingresoC);
+        panelEditar.add(codigo2);
+        panelEditar.add(nota1);
+        panelEditar.add(nota2);
+        panelEditar.add(nota3);
+        panelEditar.add(not12);
+        panelEditar.add(not22);
+        panelEditar.add(not32);
+        
     }
     
-    public void leerArchivo(){
-        ArrayList aux;
-        try(ObjectInputStream ois=new ObjectInputStream(new FileInputStream("D:\\empleados.ddr"))){
-            //Cuando no haya mas objetos saltara la excepcion EOFException
-            while(true){
-               aux = (ArrayList)ois.readObject(); 
-            }
-            
-        }catch(ClassNotFoundException e){
-        }catch(EOFException e){
-        }catch(IOException e){
-        }
-        
-        
+    public void asignarOyentes(Controlador c){
+        botonBorrar.addActionListener((ActionListener) c);
+        botonConsultar.addActionListener((ActionListener) c);
+        botonEditar.addActionListener((ActionListener) c);
+        botonIngresar.addActionListener((ActionListener) c);
     }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if(e.getSource().equals(botonGuardar)){
-            c = new Estudiante(estudiante.getText(), codigo.getText(), not1.getText(), not2.getText(), not3.getText());
-            estudiantes.add(c);
-        }
-        if(e.getSource().equals(botonGuardar)){
-            hacerSerializacion(estudiantes);
-        }
-        if(e.getSource().equals(botonConsultar)){
-            leerArchivo();
-        }
-        
-        
-    }
-
 }
