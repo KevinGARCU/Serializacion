@@ -60,8 +60,12 @@ public class Controlador implements ActionListener {
                 v.datoConsultar.setText("");
             } else {
                 try {
-                    v.mostrar_tabla(leerUnoSolo(v.datoConsultar.getText()));
-                    System.out.println(leerUnoSolo(v.datoConsultar.getText()));
+                    if(existeCodigo(v.datoConsultar.getText())){
+                        v.mostrar_tabla(leerUnoSolo(v.datoConsultar.getText()));
+                    }else{
+                        JOptionPane.showMessageDialog(null, "El codigo no existe");
+                    }
+                    
                 } catch (IOException | ClassNotFoundException ex) {
                     Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -69,11 +73,19 @@ public class Controlador implements ActionListener {
             }
 
         }
-        
-        if(e.getSource().equals(v.botonEditar)){
+
+        if (e.getSource().equals(v.botonEditar)) {
             try {
+                if(existeCodigo(v.datoConsultar2.getText())){
+                    
+                
                 editar(v.datoConsultar2.getText());
+                }else{
+                        JOptionPane.showMessageDialog(null, "El codigo no existe");
+                    }
             } catch (IOException ex) {
+                Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
                 Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -175,7 +187,7 @@ public class Controlador implements ActionListener {
                 if (aux.get(i).getCodigo() == null ? codigo == null : aux.get(i).getCodigo().equals(codigo)) {
                     es = new Estudiante();
                     es.setNombre(v.nombre2.getText());
-                    es.setCodigo(v.codigo2.getText());
+                    es.setCodigo(v.datoConsultar2.getText());
                     es.setNota1(v.not12.getText());
                     es.setNota2(v.not22.getText());
                     es.setNota3(v.not32.getText());
@@ -247,13 +259,14 @@ public class Controlador implements ActionListener {
         } catch (EOFException ex) {
 
         }
-        
+
         return listaEstudiantes;
     }
 
     public ArrayList leerUnoSolo(String codigo) throws FileNotFoundException, IOException, ClassNotFoundException {
         File fl = new File("Estudiantes.txt");
         ArrayList<Estudiante> listaEstudiantes = new ArrayList<>();
+        ArrayList<Estudiante> aux2 = new ArrayList<>();
         ObjectInputStream ois;
         ois = new ObjectInputStream(new FileInputStream(fl));
         try {
@@ -264,56 +277,38 @@ public class Controlador implements ActionListener {
         } catch (EOFException ex) {
 
         }
+        aux2.add(new Estudiante());
         for (int i = 0; i < listaEstudiantes.size(); i++) {
-                if (listaEstudiantes.get(i).getCodigo().equals(codigo)) {
-                  
-                }else{
-                    listaEstudiantes.remove(i);
-                }
+            String codigocom = listaEstudiantes.get(i).getCodigo();
+            if(codigocom.equals(codigo)){
+                aux2.set(0, listaEstudiantes.get(i));
             }
-        return listaEstudiantes;
-       
+        }
+        return aux2;
+
     }
     
-}
-/*
-    public void escribirArchivo(Estudiante est) {
-        try {
-            ObjectOutputStream oos = null;
-
-            if (fl.length() == 0) {
-                oos = new ObjectOutputStream(new FileOutputStream(fl));
-            } else {
-                oos = new MiObjectOutputStream(new FileOutputStream(fl, true));
-            }
-            oos.writeObject(est);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public void escribirArray() throws FileNotFoundException, IOException, ClassNotFoundException {
+    public boolean existeCodigo(String codigo) throws FileNotFoundException, IOException, ClassNotFoundException{
+        File fl = new File("Estudiantes.txt");
+        ArrayList<Estudiante> listaEstudiantes = new ArrayList<>();
+        ArrayList<Estudiante> aux2 = new ArrayList<>();
         ObjectInputStream ois;
         ois = new ObjectInputStream(new FileInputStream(fl));
         try {
             while (true) {
-                es = (Estudiante) ois.readObject();
-                listaEstudiantes.add(es);
+                listaEstudiantes = (ArrayList) ois.readObject();
             }
         } catch (EOFException ex) {
-
+            
         }
-    }
-
-    public boolean comprobarCodigo(String Saux) {
-        for (int i = 0; i < aux.size(); i++) {
-            if (aux.get(i).getCodigo() == Saux) {
-                JOptionPane.showMessageDialog(null, "El codigo ya existe");
+        aux2.add(new Estudiante());
+        for (int i = 0; i < listaEstudiantes.size(); i++) {
+            String codigocom = listaEstudiantes.get(i).getCodigo();
+            if(codigocom.equals(codigo)){
                 return true;
             }
         }
         return false;
     }
- */
+
+}

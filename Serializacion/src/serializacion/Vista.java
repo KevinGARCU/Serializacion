@@ -166,8 +166,8 @@ public final class Vista extends JFrame {
         panelEditar.add(datoConsultar2);
         panelEditar.add(mensajeingresoE);
         panelEditar.add(nombre2);
-        panelEditar.add(mensajeingresoC);
-        panelEditar.add(codigo2);
+        //panelEditar.add(mensajeingresoC);
+       // panelEditar.add(codigo2);
         panelEditar.add(nota1);
         panelEditar.add(nota2);
         panelEditar.add(nota3);
@@ -203,7 +203,7 @@ public final class Vista extends JFrame {
         ));
         panelConsultar.add(botonConsultar);
         panelConsultar.add(botonBorrar);
-        panelConsultar.add(labelDato);
+        //panelConsultar.add(labelDato);
         panelConsultar.add(datoConsultar);
 
         panelConsultar.add(sTabla);
