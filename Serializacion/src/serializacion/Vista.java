@@ -36,14 +36,20 @@ public final class Vista extends JFrame {
     JTextField not1;
     JTextField not3;
     JTextField not2;
+    JTextField nombre2;
+    JTextField codigo2;
+    JTextField not12;
+    JTextField not32;
+    JTextField not22;
     JTextField datoConsultar;
-
+    JTextField datoConsultar2;
 
     public Vista() {
         ventanaPrincipal();
-       // ventanaEditar();
+        
         ingresar();
         pestanaCosultar();
+        pestañaEditar();
         tabla.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]{},
                 new String[]{
@@ -113,6 +119,65 @@ public final class Vista extends JFrame {
         pestañas.add("REGISTRAR", panelIngresar);
     }
 
+    public void pestañaEditar() {
+        JPanel panelEditar = new JPanel();
+
+        panelEditar.setLayout(null);
+
+        botonEditar = new JButton("Editar");
+        botonEditar.setBounds(30, 380, 150, 25);
+        
+        JLabel labelDato = new JLabel("Ingrese el dato a Editar");
+        labelDato.setBounds(60, 10, 250, 25);
+
+        datoConsultar2 = new JTextField();
+        datoConsultar2.setBounds(60, 50, 150, 25);
+
+        JLabel mensajeingresoE = new JLabel("Ingrese el nombre del estudiante");
+        mensajeingresoE.setBounds(10, 80, 250, 50);
+
+        nombre2 = new JTextField();
+        nombre2.setBounds(10, 135, 190, 25);
+
+        JLabel mensajeingresoC = new JLabel("Ingrese el codigo del estudiante");
+        mensajeingresoC.setBounds(290, 80, 250, 50);
+
+        codigo2 = new JTextField();
+        codigo2.setBounds(290, 135, 190, 25);
+
+        JLabel nota1 = new JLabel("Nota1");
+        JLabel nota2 = new JLabel("Nota2");
+        JLabel nota3 = new JLabel("Nota3");
+
+        nota1.setBounds(40, 185, 50, 30);
+        nota2.setBounds(200, 185, 50, 30);
+        nota3.setBounds(360, 185, 50, 30);
+
+        not12 = new JTextField();
+        not32 = new JTextField();
+        not22 = new JTextField();
+
+        not12.setBounds(40, 210, 30, 30);
+        not22.setBounds(200, 210, 30, 30);
+        not32.setBounds(360, 210, 30, 30);
+
+        panelEditar.add(botonEditar);
+        panelEditar.add(labelDato);
+        panelEditar.add(datoConsultar2);
+        panelEditar.add(mensajeingresoE);
+        panelEditar.add(nombre2);
+        panelEditar.add(mensajeingresoC);
+        panelEditar.add(codigo2);
+        panelEditar.add(nota1);
+        panelEditar.add(nota2);
+        panelEditar.add(nota3);
+        panelEditar.add(not12);
+        panelEditar.add(not22);
+        panelEditar.add(not32);
+
+        pestañas.add("EDITAR", panelEditar);
+    }
+
     public void pestanaCosultar() {
         JPanel panelConsultar = new JPanel();
         panelConsultar.setLayout(null);
@@ -129,9 +194,6 @@ public final class Vista extends JFrame {
         botonBorrar = new JButton("Borrar");
         botonBorrar.setBounds(190, 100, 100, 25);
 
-        botonEditar = new JButton("Editar");
-        botonEditar.setBounds(310, 100, 100, 25);
-
         sTabla.setBounds(30, 150, 600, 350);
         tabla.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]{},
@@ -141,7 +203,6 @@ public final class Vista extends JFrame {
         ));
         panelConsultar.add(botonConsultar);
         panelConsultar.add(botonBorrar);
-        panelConsultar.add(botonEditar);
         panelConsultar.add(labelDato);
         panelConsultar.add(datoConsultar);
 
@@ -176,64 +237,8 @@ public final class Vista extends JFrame {
         tabla.setModel(model);
     }
 
-    public void ventanaEditar() {
-        JPanel panelEditar = new JPanel();
-        panelEditar.setLayout(null);
 
-        JButton botonGuardar;
-
-        JTextField estudiante2;
-        JTextField codigo2;
-        JTextField not12;
-        JTextField not32;
-        JTextField not22;
-        
-        botonGuardar = new JButton("Ingresar datos");
-        botonGuardar.setBounds(30, 380, 150, 25);
-
-        JLabel mensajeingresoE = new JLabel("Ingrese el nombre del estudiante");
-        mensajeingresoE.setBounds(10, 80, 250, 50);
-
-        estudiante2 = new JTextField();
-        estudiante2.setBounds(10, 135, 190, 25);
-
-        JLabel mensajeingresoC = new JLabel("Ingrese el codigo del estudiante");
-        mensajeingresoC.setBounds(290, 80, 250, 50);
-
-        codigo2 = new JTextField();
-        codigo2.setBounds(290, 135, 190, 25);
-
-        JLabel nota1 = new JLabel("Nota1");
-        JLabel nota2 = new JLabel("Nota2");
-        JLabel nota3 = new JLabel("Nota3");
-
-        nota1.setBounds(40, 185, 50, 30);
-        nota2.setBounds(200, 185, 50, 30);
-        nota3.setBounds(360, 185, 50, 30);
-
-        not12 = new JTextField();
-        not32 = new JTextField();
-        not22 = new JTextField();
-
-        not12.setBounds(40, 210, 30, 30);
-        not22.setBounds(200, 210, 30, 30);
-        not32.setBounds(360, 210, 30, 30);
-        
-        panelEditar.add(botonGuardar);
-        panelEditar.add(mensajeingresoE);
-        panelEditar.add(estudiante2);
-        panelEditar.add(mensajeingresoC);
-        panelEditar.add(codigo2);
-        panelEditar.add(nota1);
-        panelEditar.add(nota2);
-        panelEditar.add(nota3);
-        panelEditar.add(not12);
-        panelEditar.add(not22);
-        panelEditar.add(not32);
-        
-    }
-    
-    public void asignarOyentes(Controlador c){
+    public void asignarOyentes(Controlador c) {
         botonBorrar.addActionListener((ActionListener) c);
         botonConsultar.addActionListener((ActionListener) c);
         botonEditar.addActionListener((ActionListener) c);
